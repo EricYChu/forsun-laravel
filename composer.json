@@ -1,5 +1,5 @@
 {
-    "name": "snower/forsun-laravel",
+    "name": "ericychu/forsun-laravel",
     "description": "高性能定时服务",
     "keywords": ["forsun", "laravel", "sdk"],
     "license": "MIT",
