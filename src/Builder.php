@@ -99,10 +99,10 @@ class Builder
 
     /**
      * @param Forsun $forsun
-     * @param string $name
+     * @param string|null $name
      * @throws \Exception
      */
-    public function __construct(Forsun $forsun, string $name)
+    public function __construct(Forsun $forsun, ?string $name)
     {
         $this->forsun = $forsun;
         $this->name = $name;
