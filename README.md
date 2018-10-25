@@ -1,31 +1,27 @@
 # forsun-laravel #
 
-[![Software license][ico-license]](LICENSE)
-[![Latest stable][ico-version-stable]][link-packagist]
-[![Latest development][ico-version-dev]][link-packagist]
-[![Monthly installs][ico-downloads-monthly]][link-downloads]
+使用高性能的定时调度服务 forsun 的 Laravel/Lumen 组件。
 
-使用高性能的定时调度服务Forsun的Laravel组件。
-
-
-## Main features ##
+## 主要特性 ##
 
 * 轻松支持千万级定时任务调度。
-* 定时任务触发推送到Queue，轻松支持跨机器和共性能分布式。
-* 支持任务到期触发command、Job、Shell、Http和Event。
-* 支持驱动原生Laravel Schedule运行。
-* 支持创建延时任务和定时到期任务，和原生Laravel Schedule保持相同接口，轻松使用。
+* 定时任务触发推送到 Queue，轻松支持跨机器和共性能分布式。
+* 支持任务到期触发 command、Job、Shell、Http 和 Event。
+* 支持驱动原生 Laravel Schedule 运行。
+* 支持创建延时任务和定时到期任务，和原生 Laravel Schedule 保持相同接口，轻松使用。
 
-## Install ##
+## 安装 ##
 
-* 安装启动forsun服务，详情请看[forsun](https://github.com/snower/forsun)。
-* composer安装forsun-laravel。
+* 安装启动 forsun 服务，详情请看 [forsun](https://github.com/snower/forsun)。
+* composer 安装 forsun-laravel。
 
 ```
-composer require "snower/forsun-laravel"
+composer require ericychu/forsun-laravel
 ```
 
-## Config ##
+## 配置 ##
+
+### Laravel ##
 
 * 在 config/app.php 注册 ServiceProvider 和 Facade
 
@@ -48,7 +44,30 @@ php artisan vendor:publish --provider="Snower\LaravelForsun\ServiceProvider"
 
 * 修改应用根目录下的 config/forsun.php 中对应的参数即可。
 
-## Used ##
+### Lumen ##
+
+* 在 bootstrap/app.php 注册 Service Provider 和 Facade
+
+```
+// 注册 Service Provider
+$app->register(Snower\LaravelForsun\ServiceProvider::class);
+
+// 注册 Facade
+$app->withFacades(true, [
+    ...,
+    Snower\LaravelForsun\Facade::class => 'Forsun',
+]);
+```
+
+* 拷贝配置文件
+
+```
+cp /PROJECT_DIRECTORY/vendor/ericychu/forsun-laravel/src/config.php /PROJECT_DIRECTORY/config/forsun.php
+```
+
+* 修改应用根目录下的 config/forsun.php 中对应的参数即可。
+
+## 使用 ##
 
 ### 定义调度
 
@@ -56,10 +75,10 @@ php artisan vendor:publish --provider="Snower\LaravelForsun\ServiceProvider"
 
 ```
 
-//不指定name是自动生成
+//不指定 name 时自动生成
 Forsun::plan()->command('emails:send --force')->daily();
 
-//指定name
+//指定 name
 Forsun::plan('email')->command(EmailsCommand::class, ['--force'])->daily();
 ```
 
@@ -75,23 +94,23 @@ Forsun::plan()->job(new Heartbeat)->everyFiveMinutes();
 Forsun::plan()->exec('node /home/forge/script.js')->daily();
 ```
 
-* Event事件调度
+* Event 事件调度
 
 ```
 Forsun::plan()->fire('testevent', [])->everyMinute();
 ```
 
-* Http事件调度
+* HTTP 事件调度
 
 ```
-Forsun::plan()->http('http://www.baidu.com')->everyMinute();
+Forsun::plan()->http('https://www.google.com')->everyMinute();
 ```
 
 注意：
 
 * 每个任务只能设置一次调度频率。
 * 不支持任务输出、任务钩子及维护模式。
-* Forsun::plan是不指定任务名时自动生成，每个任务名必须唯一，相同任务名重复定义将会自动覆盖。
+* Forsun::plan 是不指定任务名时自动生成，每个任务名必须唯一，相同任务名重复定义将会自动覆盖。
 
 ### 移除调度
 
@@ -138,19 +157,11 @@ php artisan forsun:schedule:register
 php artisan forsun:schedule:unregister
 ```
 
-## Author ##
+## 开发者 ##
 
 - [snower](mailto:sujian199@gmail.com) ([twitter](http://twitter.com/snower199))
 
 
-## License ##
+## 开源许可协议 ##
 
 The code for Predis is distributed under the terms of the MIT license (see [LICENSE](LICENSE)).
-
-[ico-license]: https://img.shields.io/github/license/snower/forsun-laravel.svg?style=flat-square
-[ico-version-stable]: https://img.shields.io/packagist/v/snower/forsun-laravel.svg?style=flat-square
-[ico-version-dev]: https://img.shields.io/packagist/vpre/snower/forsun-laravel.svg?style=flat-square
-[ico-downloads-monthly]: https://img.shields.io/packagist/dm/snower/forsun-laravel.svg?style=flat-square
-
-[link-packagist]: https://packagist.org/packages/snower/forsun-laravel
-[link-downloads]: https://packagist.org/packages/snower/forsun-laravel/stats
