@@ -7,6 +7,7 @@ use Illuminate\Events\CallQueuedListener;
 use Illuminate\Support\Arr;
 use Illuminate\Console\Application;
 use Illuminate\Container\Container;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Process\ProcessUtils;
 use Snower\LaravelForsun\Jobs\CommandRunHandler;
 use Snower\LaravelForsun\Jobs\EventFireHandler;
@@ -99,6 +100,7 @@ class Builder
     /**
      * @param Forsun $forsun
      * @param string $name
+     * @throws \Exception
      */
     public function __construct(Forsun $forsun, string $name)
     {
@@ -114,10 +116,11 @@ class Builder
 
     /**
      * @return void
+     * @throws \Exception
      */
     protected function genName(): void
     {
-        $this->name = config('forsun.prefix') . Carbon::now()->format("YmdHis") . str_random(26);
+        $this->name = config('forsun.prefix') . Uuid::uuid1()->toString();
     }
 
     /**
