@@ -1,43 +1,71 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: snower
- * Date: 18/3/6
- * Time: 下午3:16
- */
 
 namespace Snower\LaravelForsun;
 
 use Carbon\Carbon;
+use Snower\LaravelForsun\Client\ForsunPlan;
 
 class Plan
 {
+    /**
+     * @var Forsun
+     */
     protected $forsun;
-    protected $forsun_pan;
+
+    /**
+     * @var ForsunPlan
+     */
+    protected $forsunPlan;
+
+    /**
+     * @var bool
+     */
     protected $removed;
 
-    public function __construct($forsun, $forsun_pan, $removed = false)
+    /**
+     * @param Forsun $forsun
+     * @param ForsunPlan $forsunPlan
+     * @param bool $removed
+     */
+    public function __construct(Forsun $forsun, ForsunPlan $forsunPlan, bool $removed = false)
     {
         $this->forsun = $forsun;
-        $this->forsun_pan = $forsun_pan;
+        $this->forsunPlan = $forsunPlan;
         $this->removed = $removed;
     }
 
-    public function getName(){
-        return $this->forsun_pan->key;
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->forsunPlan->key;
     }
 
-    public function getNextRunTime(){
-        return Carbon::createFromTimestamp($this->forsun_pan->next_time);
+    /**
+     * @return Carbon
+     */
+    public function getNextRunTime(): Carbon
+    {
+        return Carbon::createFromTimestamp($this->forsunPlan->next_time);
     }
 
-    public function remove(){
-        $this->forsun->remove($this->forsun_pan->key);
+    /**
+     * @return bool
+     * @throws Client\ForsunPlanError
+     */
+    public function remove(): bool
+    {
+        $this->forsun->remove($this->forsunPlan->key);
         $this->removed = true;
         return true;
     }
 
-    public function isRemoved(){
+    /**
+     * @return bool
+     */
+    public function isRemoved(): bool
+    {
         return $this->removed;
     }
 }

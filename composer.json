@@ -10,17 +10,20 @@
         }
     ],
     "require": {
-        "leric/php-thrift": "0.9.*"
+        "php": ">=7.1",
+        "ext-json": "*",
+        "leric/php-thrift": "0.9.*",
+        "ramsey/uuid": "^3.8"
     },
     "require-dev": {
-        "laravel/framework": "5.4.*"
+        "laravel/framework": "^5.6"
     },
     "autoload": {
         "psr-4": {
             "Snower\\LaravelForsun\\": "src/"
         }
     },
-    "minimum-stability" : "dev",
+    "minimum-stability" : "stable",
     "extra": {
         "laravel": {
             "providers": [

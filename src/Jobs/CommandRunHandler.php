@@ -1,33 +1,37 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: snower
- * Date: 18/3/7
- * Time: 下午4:11
- */
 
 namespace Snower\LaravelForsun\Jobs;
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Console\Scheduling\Event;
-use Illuminate\Console\Scheduling\Mutex;
-use Illuminate\Console\Scheduling\CacheMutex;
+use Illuminate\Console\Scheduling\EventMutex;
+use Illuminate\Console\Scheduling\CacheEventMutex;
 
 class CommandRunHandler implements ShouldQueue
 {
     protected $mutex;
 
+    /**
+     * CommandRunHandler constructor.
+     */
     public function __construct()
     {
+        /** @var Application $container */
         $container = Container::getInstance();
 
-        $this->mutex = $container->bound(Mutex::class)
-            ? $container->make(Mutex::class)
-            : $container->make(CacheMutex::class);
+        $this->mutex = $container->bound(EventMutex::class)
+            ? $container->make(EventMutex::class)
+            : $container->make(CacheEventMutex::class);
     }
 
-    public function handle($command){
+    /**
+     * @param string $command
+     * @return void
+     */
+    public function handle(string $command): void
+    {
         $event = new Event($this->mutex, $command);
         $event->run(Container::getInstance());
     }

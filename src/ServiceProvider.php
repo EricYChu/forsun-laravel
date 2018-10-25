@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: snower
- * Date: 18/3/6
- * Time: 上午11:32
- */
 
 namespace Snower\LaravelForsun;
 
@@ -31,9 +25,9 @@ class ServiceProvider extends LaravelServiceProvider
      *
      * @return void
      */
-    protected function setupConfig()
+    protected function setupConfig(): void
     {
-        $source = realpath(__DIR__.'/config.php');
+        $source = realpath(__DIR__ . '/config.php');
 
         if ($this->app instanceof LaravelApplication) {
             if ($this->app->runningInConsole()) {
@@ -53,7 +47,7 @@ class ServiceProvider extends LaravelServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(Forsun::class, function ($app) {
             $forsun = new Forsun(config('forsun'));
